@@ -1,0 +1,59 @@
+{
+  "name": "FedMes 3.0 Production UI Contract",
+  "source": {
+    "figma_file_key": "TScw6uOtnCh3SmSeqzyaj2",
+    "bridge_version": "1.9.0",
+    "inventory_job": "freeze19-inventory",
+    "queue_sequence": 682,
+    "captured_at": "2026-09-19T14:18:25.957Z"
+  },
+  "inventory": {
+    "pages": ["00 Design System", "01 Product Screens", "02 Documentation"],
+    "component_nodes": 1586,
+    "top_level_components": 290,
+    "component_sets": 259,
+    "fedmes26_top_level": 157,
+    "call_top_level": 41,
+    "product_screens": 194,
+    "android_call_screens": 31
+  },
+  "dark": {
+    "background": "#0E1621",
+    "surface": "#17212B",
+    "raised": "#202B36",
+    "border": "#2B3A48",
+    "text_primary": "#F4F7FA",
+    "text_secondary": "#8E9DAA",
+    "accent": "#3390EC",
+    "bubble_incoming": "#182533",
+    "bubble_outgoing": "#2B5278"
+  },
+  "light": {
+    "background": "#F4F7FA",
+    "surface": "#FFFFFF",
+    "raised": "#EDF2F6",
+    "accent": "#3390EC",
+    "bubble_incoming": "#FFFFFF",
+    "border": "#DCE5EC",
+    "text_primary": "#17212B",
+    "text_secondary": "#70808D",
+    "bubble_outgoing": "#E1FFC7"
+  },
+  "geometry": {
+    "android_reference": "390x844",
+    "top_bar": 58,
+    "bottom_bar_v2": 72,
+    "chat_row_compact": 68,
+    "chat_avatar": 54,
+    "composer": 54,
+    "video_player": "390x520",
+    "call_control_tray": "390x104"
+  },
+  "compatibility": {
+    "protocol_generation": 4,
+    "security_epoch": 1,
+    "server_api": "backward-compatible with 2.0.1 endpoints",
+    "huawei": "normal Android codebase with huawei distribution flavor",
+    "windows": "WPF x64 self-contained client"
+  }
+}

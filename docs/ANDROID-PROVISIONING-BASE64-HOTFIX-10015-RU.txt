@@ -1,0 +1,11 @@
+FedMes 1.0.6 build 10015: исправление JVM unit tests ProvisioningHttpApi.
+
+Причина:
+android.util.Base64 является Android framework API. В локальных JVM unit tests при
+unitTests.isReturnDefaultValues=true encodeToString возвращал null, из-за чего четыре
+ProvisioningHttpApiTest завершались NullPointerException до проверки HTTP-контракта.
+
+Исправление:
+Для idempotency key используется java.util.Base64.getUrlEncoder().withoutPadding().
+Android minSdk=29, поэтому API доступен на всех поддерживаемых устройствах. Алгоритм
+не изменён: SHA-256 и URL-safe Base64 без padding, результат по-прежнему 43 символа.

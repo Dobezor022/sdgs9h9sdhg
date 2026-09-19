@@ -1,0 +1,18 @@
+FedMes 3.0.0 build 30000 validation contract
+
+[PASS] Project/version contract 3.0.0 / 30000
+[PASS] Rust source lexical + forbidden panic/unsafe validation
+[PASS] 14 SQLite migrations on clean database; topology 16/6
+[PASS] Legacy HTTP route compatibility coverage (86 required / 89 Rust routes)
+[PASS] protocol_generation = 4
+[PASS] security_epoch = 1
+[PASS] Bridge 1.9 frozen inventory captured (seq 682; 194 screens)
+[PASS] Android/Huawei/Windows semantic token parity
+[PASS] Go fedmes-build unit test; Linux + Windows x64 builder SHA-256
+[PASS] Rust server-source archive byte/content parity with current server tree
+[PASS] security2 Go unit tests with local Go toolchain
+[REQUIRED ON BUILD HOST] cargo test --release + cargo build --release
+[REQUIRED ON BUILD HOST] Android normal/huawei lint + unit tests + release APK signing
+[REQUIRED ON BUILD HOST] dotnet restore/build/test/publish win-x64
+[REQUIRED ON DEVICES] QR login, realtime text/media, round video shapes, background/foreground, media viewer, update flow
+[GATED OFF] Native RTC/calls until signalling/media/device QA is complete

@@ -1,0 +1,27 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Обслуживание сервера — FedMes</title><link rel="stylesheet" href="assets/style.css"></head><body><header><nav><strong>FedMes</strong><a href="index.html">Главная</a><a href="structure.html">Структура</a><a href="architecture.html">Архитектура</a><a href="build.html">Сборка</a><a href="use.html">Использование</a><a href="ubuntu.html">Ubuntu HTTPS</a><a href="qr.html">QR</a><a href="operations.html">Обслуживание</a><a href="security.html">Безопасность</a></nav></header><main><h1>Обслуживание сервера</h1><p class="lead">Основные команды для журнала, обновления, резервного копирования и восстановления.</p>
+<h2>Управление службой</h2><pre><code>sudo systemctl status fedmes
+sudo systemctl restart fedmes
+sudo systemctl stop fedmes
+sudo systemctl start fedmes
+sudo journalctl -u fedmes -f</code></pre>
+<h2>Проверка HTTPS и Nginx</h2><pre><code>sudo nginx -t
+sudo systemctl reload nginx
+sudo certbot renew --dry-run
+curl -fsS https://ВАШ_ДОМЕН/health</code></pre>
+<h2>Резервная копия</h2><p>Для согласованной копии остановите сервер:</p><pre><code>sudo systemctl stop fedmes
+sudo tar --xattrs --acls -C /var/lib -czf "/root/fedmes-backup-$(date +%F-%H%M%S).tar.gz" fedmes
+sudo systemctl start fedmes</code></pre>
+<h2>Восстановление</h2><pre><code>sudo systemctl stop fedmes
+sudo mv /var/lib/fedmes /var/lib/fedmes.before-restore
+sudo tar -C /var/lib -xzf /root/fedmes-backup-ДАТА.tar.gz
+sudo chown -R fedmes:fedmes /var/lib/fedmes
+sudo chmod 700 /var/lib/fedmes
+sudo systemctl start fedmes</code></pre>
+<h2>Обновление программ</h2><ol><li>Соберите новый <code>Build/linuxhttps</code>.</li><li>Передайте обновлённый проект на VPS.</li><li>Сделайте резервную копию.</li><li>Повторно выполните <code>sudo bash deploy/install.sh</code>.</li><li>Проверьте журнал и <code>/health</code>.</li></ol>
+<h2>Удаление</h2><pre><code>sudo systemctl disable --now fedmes
+sudo rm -f /etc/systemd/system/fedmes.service
+sudo systemctl daemon-reload
+sudo rm -rf /opt/fedmes /etc/fedmes
+sudo rm -f /etc/nginx/sites-enabled/fedmes /etc/nginx/sites-available/fedmes
+sudo nginx -t &amp;&amp; sudo systemctl reload nginx</code></pre><div class="warning">Каталог <code>/var/lib/fedmes</code> не удаляйте, пока не сделана и не проверена резервная копия.</div>
+<footer>Документация относится к исходному проекту и программам, находящимся в этом архиве.</footer></main></body></html>

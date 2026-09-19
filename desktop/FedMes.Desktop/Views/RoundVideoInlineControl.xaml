@@ -1,0 +1,64 @@
+<UserControl x:Class="FedMes.Desktop.Views.RoundVideoInlineControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="220"
+             Height="220"
+             Focusable="True"
+             Unloaded="UserControl_Unloaded">
+    <Grid x:Name="RootGrid"
+          Background="Black"
+          Clip="{Binding Shape, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource RoundShapeGeometry}}"
+          ClipToBounds="True"
+          SizeChanged="RootGrid_SizeChanged"
+          MouseLeftButtonUp="RootGrid_MouseLeftButtonUp">
+        <Image x:Name="PreviewImage"
+               Source="{Binding PreviewSource, RelativeSource={RelativeSource AncestorType=UserControl}}"
+               Stretch="UniformToFill" />
+        <MediaElement x:Name="Player"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      RenderTransformOrigin="0.5,0.5"
+                      LoadedBehavior="Manual"
+                      UnloadedBehavior="Manual"
+                      Stretch="Fill"
+                      SnapsToDevicePixels="True"
+                      IsHitTestVisible="False"
+                      MediaOpened="Player_MediaOpened"
+                      MediaEnded="Player_MediaEnded"
+                      MediaFailed="Player_MediaFailed">
+            <MediaElement.RenderTransform>
+                <RotateTransform x:Name="PlayerRotation" Angle="0" />
+            </MediaElement.RenderTransform>
+        </MediaElement>
+        <Border x:Name="PlayOverlay"
+                Width="56"
+                Height="56"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{DynamicResource FedMesOverlayBrush}"
+                CornerRadius="28">
+            <TextBlock x:Name="PlayGlyph"
+                       Margin="4,0,0,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="25"
+                       Foreground="White"
+                       Text="▶" />
+        </Border>
+        <ProgressBar x:Name="LoadingBar"
+                     Width="92"
+                     Height="5"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     IsIndeterminate="True"
+                     Visibility="Collapsed" />
+        <ProgressBar x:Name="PositionBar"
+                     Height="4"
+                     Margin="18,0,18,12"
+                     VerticalAlignment="Bottom"
+                     Minimum="0"
+                     Maximum="1"
+                     IsHitTestVisible="False" />
+
+    </Grid>
+</UserControl>

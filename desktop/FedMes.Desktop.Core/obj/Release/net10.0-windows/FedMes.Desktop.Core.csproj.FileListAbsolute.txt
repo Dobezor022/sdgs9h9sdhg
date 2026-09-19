@@ -1,0 +1,4 @@
+C:\Fedmes2\desktop\FedMes.Desktop.Core\obj\Release\net10.0-windows\FedMes.Desktop.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Fedmes2\desktop\FedMes.Desktop.Core\obj\Release\net10.0-windows\FedMes.Desktop.Core.AssemblyInfoInputs.cache
+C:\Fedmes2\desktop\FedMes.Desktop.Core\obj\Release\net10.0-windows\FedMes.Desktop.Core.AssemblyInfo.cs
+C:\Fedmes2\desktop\FedMes.Desktop.Core\obj\Release\net10.0-windows\FedMes.Desktop.Core.csproj.CoreCompileInputs.cache

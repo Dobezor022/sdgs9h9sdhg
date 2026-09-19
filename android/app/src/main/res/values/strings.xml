@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FedMes</string>
+    <string name="brand_mark">FM</string>
+    <string name="provisioning_title">FedMes</string>
+    <string name="provisioning_subtitle">Закрытый семейный мессенджер</string>
+    <string name="provisioning_description">Вход доступен только по одноразовому приглашению доверенного устройства.</string>
+    <string name="sign_in_with_qr">Войти по QR</string>
+    <string name="sign_in_with_qr_description">Открыть защищённый сканер одноразового приглашения</string>
+    <string name="family_members_description">Пять участников семьи</string>
+    <string name="scanner_title">Сканирование QR</string>
+    <string name="scanner_hint">Наведите камеру на одноразовый QR-код</string>
+    <string name="scanner_processing">Проверяем приглашение и привязываем устройство…</string>
+    <string name="close_scanner">Закрыть сканер</string>
+    <string name="camera_permission_title">Нужен доступ к камере</string>
+    <string name="camera_permission_description">FedMes использует камеру только для сканирования одноразового QR-приглашения.</string>
+    <string name="grant_camera_permission">Разрешить камеру</string>
+    <string name="retry">Повторить</string>
+    <string name="sign_out">Выйти</string>
+    <string name="restoring_session">Восстанавливаем защищённую сессию…</string>
+    <string name="signed_in_title">Устройство подключено</string>
+    <string name="signed_in_user">Пользователь: %1$s</string>
+    <string name="signed_in_device">Устройство: %1$s</string>
+    <string name="error_invalid_qr">QR-код не является действительным приглашением FedMes.</string>
+    <string name="error_unsupported_qr">Версия или тип приглашения не поддерживается.</string>
+    <string name="error_expired_qr">Срок действия приглашения истёк. Создайте новый QR-код.</string>
+    <string name="error_insecure_server">В release-сборке разрешены только серверы с HTTPS.</string>
+    <string name="error_invalid_user">В приглашении указан неизвестный пользователь.</string>
+    <string name="error_invitation_used">Это приглашение уже было использовано.</string>
+    <string name="error_invitation_rejected">Сервер отклонил или не нашёл приглашение.</string>
+    <string name="error_network">Не удалось подключиться к серверу. Проверьте сеть и адрес сервера.</string>
+    <string name="error_server">Сервер временно недоступен. Повторите попытку.</string>
+    <string name="error_invalid_response">Сервер вернул неподдерживаемый ответ.</string>
+    <string name="error_device_security">Не удалось создать защищённый ключ устройства.</string>
+    <string name="error_session_recovery">Не удалось подтвердить доверенное устройство и обновить сессию.</string>
+    <string name="error_secure_storage">Не удалось сохранить защищённую сессию.</string>
+    <string name="error_camera">Не удалось запустить камеру.</string>
+    <string name="restore_failed_title">Не удалось восстановить вход</string>
+    <string name="use_new_qr">Войти по новому QR</string>
+</resources>

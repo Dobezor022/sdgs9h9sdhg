@@ -1,0 +1,26 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Структура проекта — FedMes</title><link rel="stylesheet" href="assets/style.css"></head><body><header><nav><strong>FedMes</strong><a href="index.html">Главная</a><a href="structure.html">Структура</a><a href="architecture.html">Архитектура</a><a href="build.html">Сборка</a><a href="use.html">Использование</a><a href="ubuntu.html">Ubuntu HTTPS</a><a href="qr.html">QR</a><a href="operations.html">Обслуживание</a><a href="security.html">Безопасность</a></nav></header><main><h1>Структура проекта</h1><p class="lead">Проект разделён на исходный код, готовые сборки, инструменты установки и документацию.</p>
+<table><tr><th>Путь</th><th>Содержание</th></tr>
+<tr><td><code>android/</code></td><td>Android-приложение Kotlin/Jetpack Compose, варианты Normal и Huawei.</td></tr>
+<tr><td><code>desktop/</code></td><td>Windows-клиент WPF .NET 10 и модульные тесты.</td></tr>
+<tr><td><code>server/</code></td><td>Сервер Go, SQLite, выдача приглашений и API сообщений.</td></tr>
+<tr><td><code>tools/</code></td><td>Исходники программ <code>fedmes-build</code>, <code>fedmes-qr</code> и <code>fedmes-install</code>.</td></tr>
+<tr><td><code>Build/</code></td><td>Единый каталог команд сборки и готовых файлов.</td></tr>
+<tr><td><code>deploy/</code></td><td>Интерактивная установка Ubuntu 24.04 и примеры переменных сервера.</td></tr>
+<tr><td><code>docs/</code></td><td>Русская документация HTML.</td></tr></table>
+<h2>Каталог Build</h2><pre><code>Build/
+├── android.ps1
+├── huawei.ps1
+├── windowsclient.ps1
+├── windowsxhttp.ps1
+├── all.ps1
+├── fedmes-build.exe
+├── fedmes-build
+├── android/
+│   ├── normal/
+│   └── huawei/harmonous2.0/
+├── windowsclient/
+├── windowshttp/
+└── linuxhttps/</code></pre>
+<p><code>Build/windowshttp</code> содержит Windows-версию серверной части, которая работает по HTTP и предназначена для локальной сети или тестов. <code>Build/linuxhttps</code> содержит сервер Linux, который установщик закрывает Nginx и публичным HTTPS.</p>
+<h2>Названия целей</h2><table><tr><th>Цель</th><th>Результат</th></tr><tr><td><code>android</code></td><td>Normal debug APK</td></tr><tr><td><code>huawei</code></td><td>Huawei/HarmonyOS 2.0+ debug APK</td></tr><tr><td><code>windowsclient</code></td><td>Самодостаточный одиночный EXE клиента</td></tr><tr><td><code>windowsxhttp</code></td><td>Windows HTTP сервер и QR-программа</td></tr><tr><td><code>linuxhttps</code></td><td>Linux сервер, QR-программа и установщик HTTPS</td></tr><tr><td><code>all</code></td><td>Все перечисленные цели</td></tr></table>
+<footer>Документация относится к исходному проекту и программам, находящимся в этом архиве.</footer></main></body></html>

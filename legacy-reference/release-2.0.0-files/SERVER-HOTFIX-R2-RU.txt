@@ -1,0 +1,19 @@
+FedMes 2.0.0 build 20000 — server install hotfix R2
+
+Причина: clean-install дошёл до go test ./... и обнаружил три несовместимости тестов/legacy-normalization после введения schema 14 и обязательного FEDMES_PUBLIC_URL. Дополнительно обнаружены старые helper ELF 1.0.6 в deploy bundle.
+
+Исправлено:
+- config_test: production HTTPS origin задаётся явно;
+- migration tests: schema 14 + blind fabric tables;
+- CreateMessage: CryptoVersion=0 legacy representation нормализуется до v1 до downgrade check;
+- deploy/fedmes-qr = 2.0.0;
+- deploy/fedmes-update-server = 2.0.0;
+- deploy/fedmes-maintainer = 2.0.0 (20000);
+- publisher defaults = 2.0.0/20000;
+- installer проверяет версии helper binaries до удаления/установки runtime.
+
+После копирования файлов повторно запустить:
+  export FEDMES_DOMAIN='fedmes.xuanguang.su'
+  sudo -E ./clean-install-2.0.0.sh --preserve-data
+
+Первый неуспешный запуск остановился на шаге [4/10], до установки нового server binary. /var/lib/fedmes при --preserve-data не удалялся.

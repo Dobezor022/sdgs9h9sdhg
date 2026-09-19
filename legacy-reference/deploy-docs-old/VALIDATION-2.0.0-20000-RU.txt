@@ -1,0 +1,95 @@
+FedMes 2.0.0 build 20000 — VALIDATION STATUS
+Dobezor Studio / Family Local
+Security Epoch: 1
+Protocol generation: 4
+
+ПРОВЕРЕНО В ТЕКУЩЕЙ СРЕДЕ
+==========================
+[PASS] security2: GOTOOLCHAIN=local go test ./...
+[PASS] security2: GOTOOLCHAIN=local go test -race ./...
+       Identity/X25519, Trust State, Admission, Capsule/Ratchet,
+       forged-ciphertext transactional state, healing, blob chunks,
+       realtime packet crypto and replay window.
+
+[PASS] tools: GOTOOLCHAIN=local go test ./...
+       fedmes-build / fedmes-update-server tests and compilation of tools module.
+
+[PASS] rebuilt current build tools:
+       Build/fedmes-build + .exe
+       Build/fedmes-qr + .exe
+       Build/fedmes-update-server + .exe
+       Build/fedmes-maintainer + .exe
+       Version output: 2.0.0 / maintainer 2.0.0 (20000).
+
+[PASS] gofmt for new/modified FSA2/bridge/server Go sources.
+[PASS] bash -n for all *.sh under project tree.
+[PASS] JSON parsing for all project *.json files.
+[PASS] XML/XAML/csproj parsing for all matching project files.
+[PASS] clean-install-2.0.0.sh syntax.
+[PASS] no-log policy added to the 2.0 deployment: Nginx access_log off,
+       server logger io.Discard by default, systemd output suppressed.
+
+TARGET BUILD ATTEMPTS IN THIS ENVIRONMENT
+=========================================
+[BLOCKED] windowsclient
+[BLOCKED] android
+[BLOCKED] huawei
+[BLOCKED] linuxhttps
+
+The builder starts correctly as FedMes Builder 2.0.0, but the environment has
+Go 1.23.2 while the retained 1.x crypto/server modules require Go 1.25.0. The
+sandbox has no Internet/toolchain cache to download Go 1.25.0 and dependencies.
+It also has no .NET SDK and no Android SDK. Therefore these target binaries
+cannot be honestly marked built or validated here.
+
+
+BUILD/DEPLOY PACKAGING FIX (18.09.2026)
+=======================================
+[PASS] deploy helper binaries replaced with 2.0.0 / build 20000 binaries.
+[PASS] server-source.tar.gz now contains server/, crypto-core/ and security2/.
+[PASS] clean installer writes FEDMES_PUBLIC_URL=https://$FEDMES_DOMAIN.
+[PASS] maintainer unit embeds the resolved HTTPS domain instead of literal $DOMAIN.
+[PASS] Android production signing explicitly uses JKS for both certificate inspection and Gradle signing config.
+
+
+SERVER INSTALL HOTFIX R2 (18.09.2026)
+====================================
+[FIXED] config safe-default test now provides the mandatory production HTTPS origin and a separate test verifies that the origin is required.
+[FIXED] migration tests expect schema version 14 and verify the blind_routes/blind_objects migration.
+[FIXED] legacy NewMessage CryptoVersion=0 is normalized to v1 before downgrade-floor evaluation; negative versions are rejected.
+[FIXED] deploy helper ELF files rebuilt from tools/ and verified as 2.0.0 / 20000.
+[FIXED] 2.0 publisher/update defaults use 2.0.0 / 20000.
+[HARDENED] clean installer refuses helper binaries that are not 2.0.0 / 20000.
+[PASS] local config package test with a compatibility copy of go.mod under Go 1.23.2.
+[PENDING TARGET] full server go test ./... must be rerun by clean-install on Ubuntu Go 1.26.5 because this sandbox lacks the required server dependency cache/toolchain.
+
+IMPORTANT PRODUCTION GATES
+==========================
+1. FSA2 message engines exist on Android/Windows, but legacy MessagingRepository
+   is not yet fully cut over. Until that cutover, this is not an all-FSA2 client.
+2. Realtime cryptography and blind streaming transports exist, but complete
+   Android/Windows microphone/camera/codec/render call engines and call UI are
+   not finished in this package.
+3. FedUI2 foundations exist on both platforms, but the complete existing UI is
+   still a migration shell and has not been fully rewritten onto FedUI2.
+4. Full device-admission/recovery UX and Trust Constellation persistence/cross-
+   device checkpoint integration require final application wiring.
+5. Android/Windows/server release builds must pass on supported target toolchains.
+6. Production packages must be signed. Production signing keys are intentionally
+   not included in this archive.
+7. Current cross-platform bridge serializes some FSA2 private key material as
+   process-local JSON/base64 strings during creation/import. Before final rollout,
+   root/device long-lived private keys must be moved behind non-exportable/handle-
+   based endpoint vault APIs so normal UI/application code never receives them.
+8. The current conversation ratchet requires in-order delivery for one route. The
+   final multi-path implementation must either enforce one authenticated ordered
+   lane per ratchet or add a bounded skipped-key/out-of-order receive mechanism.
+9. Parser fuzzing, call soak/network-loss tests, migration on a production-data
+   copy, rollback/fork tests and independent security review remain mandatory.
+
+CONCLUSION
+==========
+This archive is a real FedMes 2.0 production-source candidate with implemented
+new security/transport foundations and rebuilt tooling. It is NOT represented as
+an audited/signed/deploy-ready production release. That label is reserved until
+all gates above pass.

@@ -1,0 +1,40 @@
+FedMes 1.0.6 build 10015 — фактическая проверка комплекта
+
+Проверено в среде подготовки:
+- версии Android Normal, Android Huawei, Windows Client, Windows HTTP Server, Linux HTTPS Server, manifests и publisher: 1.0.6 / 10015;
+- Kotlin PSI parsing всех Kotlin/KTS исходников Android без синтаксических ошибок;
+- release AndroidManifest: android:allowBackup=false и android:usesCleartextTraffic=false; HTTP разрешён только отдельным debug manifest;
+- XML parsing XAML, csproj, props, slnx и Android XML;
+- лексическая проверка изменённых C# файлов и XML-проверка WPF XAML;
+- gofmt всех Go-файлов;
+- go test ./... и go vet ./... для dependency-free tools module;
+- Linux и Windows cross-build инструментов fedmes-build, fedmes-qr, fedmes-update-server и fedmes-maintainer;
+- SQLite migration 0013 на чистой базе и при обновлении схемы 0012 -> 0013;
+- сохранение количества family_users и chats при обновлении;
+- наличие OPAQUE, Olm/Megolm, replay, sequence и crypto migration таблиц/колонок;
+- PRAGMA integrity_check = ok и PRAGMA foreign_key_check без нарушений;
+- bash -n для deploy shell scripts;
+- JSON parsing project/release/test-vector manifests;
+- отсутствие UTF-8 без BOM в PowerShell 5.1 scripts с не-ASCII текстом;
+- содержимое server-source.tar.gz: server/go.mod и crypto-core/go.mod;
+- ZIP integrity и отсутствие абсолютных/выходящих за каталог путей;
+- SHA-256 для всех выпускаемых архивов.
+
+Реализовано в исходном коде 10015:
+- OPAQUE remote password registration/login/password change с fake record для неизвестного пользователя, одинаковой внешней ошибкой, replay/idempotency state и encrypted restart-safe KE2 continuation;
+- OPAQUE выдаёт только AUTHENTICATED_NO_KEYS и не открывает историю;
+- Account Root Key, Recovery Key, encrypted vault и staged local commit;
+- signed device approval и encrypted provisioning package;
+- раздельные device signing/key-agreement keys;
+- Olm для device-to-device/личного key transport и Megolm для room sessions;
+- monotonic sequence reservations, replay checks, key rotation после отзыва устройства;
+- resumable client-verified migration legacy ciphertext -> crypto version 2 без удаления source ciphertext до проверки;
+- encrypted age backup и rollback-safe restore;
+- production HTTPS enforcement.
+
+Что обязательно выполняется на целевых машинах:
+- Android Gradle tests/lint/release builds запускаются Build\fedmes-build.exe на Windows с Android SDK;
+- Windows restore/tests/WPF Release build запускаются тем же builder с .NET 10 SDK;
+- полный server/crypto-core go test, go vet и build запускаются clean-install-1.0.6.sh на Ubuntu с Go 1.26.5 и загружаемыми модулями.
+
+В среде подготовки отсутствуют Android SDK, .NET 10 SDK и сетевой доступ к внешним Go modules, поэтому эти три полные target-сборки здесь не объявляются выполненными. Установщик не заменяет рабочий сервер, если server test/vet/build завершились ошибкой.

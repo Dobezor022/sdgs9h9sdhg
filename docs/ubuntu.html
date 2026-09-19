@@ -1,0 +1,13 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Установка Ubuntu 24.04 с HTTPS — FedMes</title><link rel="stylesheet" href="assets/style.css"></head><body><header><nav><strong>FedMes</strong><a href="index.html">Главная</a><a href="structure.html">Структура</a><a href="architecture.html">Архитектура</a><a href="build.html">Сборка</a><a href="use.html">Использование</a><a href="ubuntu.html">Ubuntu HTTPS</a><a href="qr.html">QR</a><a href="operations.html">Обслуживание</a><a href="security.html">Безопасность</a></nav></header><main><h1>Установка Ubuntu 24.04 с HTTPS</h1><p class="lead">Интерактивный установщик создаёт отдельного системного пользователя, systemd-сервис, Nginx, сертификат Let’s Encrypt и закрываемую паролем страницу загрузок.</p>
+<h2>До установки</h2><ol><li>Подготовьте чистый сервер Ubuntu 24.04 x64.</li><li>Создайте DNS A-запись домена на IPv4 сервера. AAAA-запись добавляйте только при рабочем IPv6.</li><li>Разрешите входящие TCP 22, 80 и 443 в панели VPS.</li><li>Соберите <code>linuxhttps</code>, APK и Windows-клиент на рабочем ПК.</li><li>Скопируйте весь проект на сервер, например в <code>/opt/src/fedmes</code>.</li></ol>
+<h2>Одна команда</h2><pre><code>cd /opt/src/fedmes
+sudo bash deploy/install.sh</code></pre>
+<p>Установщик спросит домен, email для сертификата, внутренний порт, пути к APK/EXE, необходимость пароля страницы загрузок и выпуск QR-кодов.</p>
+<h2>Что устанавливается</h2><table><tr><th>Путь</th><th>Назначение</th></tr><tr><td><code>/opt/fedmes/bin</code></td><td>Сервер и QR-программа.</td></tr><tr><td><code>/var/lib/fedmes</code></td><td>SQLite, медиа и закрытые QR; владелец <code>fedmes</code>.</td></tr><tr><td><code>/etc/fedmes/fedmes.env</code></td><td>Переменные systemd.</td></tr><tr><td><code>/var/www/fedmes</code></td><td>Страница и клиентские файлы.</td></tr><tr><td><code>/etc/nginx/sites-available/fedmes</code></td><td>Обратный прокси HTTPS.</td></tr></table>
+<h2>Проверка</h2><pre><code>sudo systemctl status fedmes --no-pager
+sudo nginx -t
+curl -fsS https://ВАШ_ДОМЕН/health
+sudo journalctl -u fedmes -n 100 --no-pager</code></pre>
+<h2>Повторная установка и обновление</h2><p>Повторный запуск сохраняет каталог <code>/var/lib/fedmes</code>, заменяет серверные бинарные файлы, обновляет systemd/Nginx и повторно проверяет HTTPS. Перед крупным обновлением сделайте резервную копию.</p>
+<div class="warning"><strong>DNS обязателен.</strong> Certbot не выпустит сертификат, пока домен не ведёт на сервер и порты 80/443 недоступны из Интернета.</div>
+<footer>Документация относится к исходному проекту и программам, находящимся в этом архиве.</footer></main></body></html>

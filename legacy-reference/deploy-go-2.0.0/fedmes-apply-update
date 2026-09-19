@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+[[ ${EUID} -eq 0 ]] || exec sudo -E "$0" "$@"
+
+ARCHIVE="${1:?Укажите проверенный server update tar.gz}"
+EXPECTED_CODE="${2:-unknown}"
+[[ -f "$ARCHIVE" ]] || { echo "Архив не найден: $ARCHIVE" >&2; exit 1; }
+
+WORK="$(mktemp -d /tmp/fedmes-apply.XXXXXX)"
+BACKUP="/var/lib/fedmes/maintenance/rollback-$(date +%Y%m%d-%H%M%S)-$EXPECTED_CODE"
+trap 'rm -rf "$WORK"' EXIT
+mkdir -p "$BACKUP"
+tar -xzf "$ARCHIVE" -C "$WORK"
+[[ -f "$WORK/SHA256SUMS" ]] || { echo "В пакете нет SHA256SUMS" >&2; exit 1; }
+(cd "$WORK" && sha256sum -c SHA256SUMS)
+for binary in fedmes-server fedmes-update-server fedmes-maintainer; do
+  [[ -x "$WORK/$binary" ]] || { echo "Не найден $binary" >&2; exit 1; }
+  [[ -f "/opt/fedmes/bin/$binary" ]] && cp -a "/opt/fedmes/bin/$binary" "$BACKUP/"
+done
+
+systemctl stop fedmes.service fedmes-update.service
+install -o root -g root -m 0755 "$WORK/fedmes-server" /opt/fedmes/bin/fedmes-server
+install -o root -g root -m 0755 "$WORK/fedmes-update-server" /opt/fedmes/bin/fedmes-update-server
+install -o root -g root -m 0755 "$WORK/fedmes-maintainer" /opt/fedmes/bin/fedmes-maintainer
+systemctl start fedmes.service fedmes-update.service
+
+healthy=0
+for _ in $(seq 1 20); do
+  if curl -fsS http://127.0.0.1:8008/health/live >/dev/null && \
+     curl -fsS http://127.0.0.1:8010/health >/dev/null; then
+    healthy=1
+    break
+  fi
+  sleep 1
+done
+if [[ $healthy -ne 1 ]]; then
+  echo "Новая версия не прошла health check; выполняется откат" >&2
+  for binary in fedmes-server fedmes-update-server fedmes-maintainer; do
+    [[ -f "$BACKUP/$binary" ]] && install -o root -g root -m 0755 "$BACKUP/$binary" "/opt/fedmes/bin/$binary"
+  done
+  systemctl restart fedmes.service fedmes-update.service
+  exit 1
+fi
+
+# Текущий maintainer не может перезапустить собственный процесс синхронно.
+systemd-run --unit="fedmes-maintainer-restart-$EXPECTED_CODE" --on-active=5s \
+  /bin/systemctl restart fedmes-maintainer.service >/dev/null 2>&1 || true
+rm -f "$ARCHIVE"
+echo "FedMes server update $EXPECTED_CODE применён успешно"

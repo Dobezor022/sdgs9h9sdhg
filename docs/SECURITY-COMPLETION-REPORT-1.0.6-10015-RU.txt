@@ -1,0 +1,47 @@
+FedMes 1.0.6 build 10015 — отчёт по завершённой security/recovery логике
+
+1. Версии и платформы
+
+Android Normal, Android Huawei/HarmonyOS, Windows Client, Windows HTTP Server и Linux HTTPS Server переведены на versionName 1.0.6 / versionCode 10015. Publisher и required-update manifests требуют минимум build 10015.
+
+2. Вход и состояние аккаунта
+
+Серверная аутентификация отделена от получения ключей истории. Состояния UNREGISTERED, REGISTRATION_PENDING, AUTHENTICATED_NO_KEYS, KEY_TRANSFER_PENDING, KEYS_RESTORED, READY, REVOKED и RECOVERY_REQUIRED используются сервером и клиентами. JWT/OPAQUE-сессия не переводит устройство в READY. Клиент должен получить encrypted vault, локально восстановить Account Root Key, проверить vault/test record, выполнить staged local commit и подтвердить восстановление.
+
+3. Атомарная QR-регистрация
+
+QR protocol v3 использует request/idempotency key. Проверка invitation, создание registration attempt, устройства, purpose-separated public keys, session/result и погашение invitation выполняются транзакционно. Повтор после потери ответа возвращает сохранённый результат; существующий рабочий профиль не перезаписывается до завершения восстановления.
+
+4. OPAQUE
+
+В crypto-core и сервер интегрирована OPAQUE-библиотека. Реализованы remote registration, login и password change. Пароль не передаётся серверу открытым и не хранится как password hash. Для неизвестного пользователя используется fake record. KE2 continuation шифруется серверным result key и переживает restart. После временной DB/HTTP ошибки KE3 можно повторить; continuation удаляется только после успешного commit, окончательной auth-ошибки или expiry. Повтор завершённого attempt возвращает прежний session result.
+
+OPAQUE создаёт AUTHENTICATED_NO_KEYS. Доступ к истории требует Recovery Key либо подтверждение доверенным устройством. Смена OPAQUE-пароля не меняет Account Root Key.
+
+5. Account Root Key, vault и Recovery Key
+
+Account Root Key и Recovery Key создаются клиентом как независимые 32-байтовые случайные значения. Сервер хранит encrypted key vault и encrypted recovery package, но не открытые ARK/Recovery Key. Android использует Android Keystore и noBackupFilesDir. Windows использует случайный AES wrapping key под DPAPI CurrentUser; восстановление не зависит от переноса Windows-профиля. Неверный Recovery Key или повреждённый vault не удаляет активный профиль.
+
+6. Подтверждение устройства
+
+Новое OPAQUE/QR-устройство остаётся pending. Доверенное READY-устройство проверяет fingerprint, подписывает device certificate и шифрует provisioning package на отдельный key-agreement public key нового устройства. Сервер хранит только ciphertext/package metadata. Новое устройство проверяет сертификат, расшифровывает package и контрольную запись, затем завершает READY. Повторный OPAQUE-вход с существующим device_id разрешён только при полном совпадении username, signing key и key-agreement key; отозванный или подменённый device id отклоняется.
+
+7. Ratchet и crypto version 2
+
+Общий crypto-core использует Olm sessions для pairwise/device key transport и Megolm outbound/inbound group sessions для комнат. Состояние аккаунта и sessions хранится в encrypted local vault и обновляется атомарно. Сервер хранит public bundles, signed one-time keys, encrypted envelopes, room session metadata и per-device key packages. Message sequence reservations и ciphertext hashes защищают от replay/conflicting delivery. При revoke создаётся room rotation event, устройство перестаёт получать новые packages.
+
+8. Миграция legacy crypto
+
+Migration 0013 добавляет crypto version 2, room key versions, migration records, staged message/media replacements и progress indexes без DROP/DELETE старых таблиц. Клиент мигрирует bounded batches, сохраняет source SHA-256, загружает новый ciphertext с уникальным nonce/AAD v2, локально проверяет round-trip и подписывает verification. Исходный ciphertext заменяется/помечается retired только после подтверждённой транзакции. Процесс идемпотентен и продолжается после restart. Legacy key удаляется из vault только после отсутствия pending/failed records и фиксации legacy_fmk_removed_at.
+
+9. Медиа и ACL
+
+Каждый файл использует отдельный random file key. Media operations проверяют membership, message-room-attachment relation и revoke state. Decrypted temp хранится только в private application cache с random names и startup cleanup. Миграция больших файлов выполняется streaming/batches и сверяет ciphertext hash.
+
+10. Backup/restore и HTTPS
+
+Ubuntu-комплект содержит encrypted age backup, manifest/checksum, SQLite integrity/FK verification, tar path validation и rollback-safe restore. Release-клиенты принимают production URL и update manifest только по HTTPS; cleartext остаётся только в debug Android configuration.
+
+11. Проверка
+
+В среде подготовки выполнены статические Android/Windows проверки, tools tests/vet/build, migration 0013 fresh/upgrade tests, Bash/JSON/XML/archive checks. Полные Android, .NET WPF и server/crypto-core builds выполняются включёнными scripts на целевых Windows/Ubuntu, поскольку текущая среда не содержит Android SDK/.NET 10 и не может загрузить внешние Go modules. Это не является независимым криптографическим аудитом; перед production требуется restore-test на копии данных и тест чистого устройства.

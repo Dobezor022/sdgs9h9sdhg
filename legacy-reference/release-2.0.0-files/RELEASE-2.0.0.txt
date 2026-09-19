@@ -1,0 +1,10 @@
+FedMes 2.0.0 build 20000
+Dobezor Studio / Family Local
+
+Security Epoch: 1
+Protocol generation: 4
+Security core: FSA2/1
+
+Этот комплект является production-source candidate. Он содержит полный legacy functional source, новый FSA2 core, Android/Windows bridges, blind object/realtime server fabric, FedUI 2 foundation, migration docs и rebuilt fedmes-build tools.
+
+Перед production rollout требуются target builds/signing/audit согласно VALIDATION-2.0.0-20000-RU.txt.

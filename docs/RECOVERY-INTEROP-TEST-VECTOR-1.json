@@ -1,0 +1,19 @@
+{
+  "protocol_version": 3,
+  "server_url": "https://fedmes.example",
+  "username": "grisha",
+  "package_id": "00000000-0000-4000-8000-000000000014",
+  "vault_version": 1,
+  "vault_revision": 7,
+  "crypto_version": 2,
+  "aad_version": 1,
+  "kdf": "PBKDF2-HMAC-SHA256",
+  "iterations": 310000,
+  "password_encoding": "base64url-canonical",
+  "recovery_key": "ICEiIyQlJicoKSorLC0uLzAxMjM0NTY3ODk6Ozw9Pj8",
+  "salt_base64": "QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl8=",
+  "nonce_base64": "YGFiY2RlZmdoaWpr",
+  "ciphertext_base64": "vpN1OM8iNs68w0Q6KCJXsB7lhUHDgvknuq/lg163PrWlYKgn6MDal2HLOe8JnzzC",
+  "ciphertext_sha256": "b6dcdb83a6d8c9e29700f1b4ad6e33d1270d7dc60879a4e719a80798850f4449",
+  "expected_account_root_key_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+}

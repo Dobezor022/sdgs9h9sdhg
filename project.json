@@ -1,0 +1,58 @@
+{
+  "name": "FedMes",
+  "layout_version": 1,
+  "documentation": "START.html",
+  "build": {
+    "windows_scripts": [
+      "Build/android.ps1",
+      "Build/huawei.ps1",
+      "Build/windowsclient.ps1",
+      "Build/all.ps1"
+    ],
+    "windows_tool": "Build/fedmes-build.exe",
+    "linux_tool": "Build/fedmes-build",
+    "targets": [
+      "android",
+      "huawei",
+      "windowsclient",
+      "linuxhttps",
+      "all"
+    ]
+  },
+  "outputs": {
+    "android_normal": "Build/android/normal",
+    "android_huawei": "Build/android/huawei/harmonous2.0",
+    "windows_client": "Build/windowsclient",
+    "linux_https_bundle": "Build/linuxhttps"
+  },
+  "deploy": {
+    "command": "sudo bash deploy/clean-install-3.0.0.sh --preserve-data",
+    "platform": "Ubuntu 24.04 x86_64"
+  },
+  "version": "3.0.0",
+  "release_code": 30000,
+  "public_origin": "CONFIGURED_BY_FEDMES_DOMAIN_AT_DEPLOYMENT",
+  "updates": {
+    "interval_minutes": 10,
+    "endpoint": "/api/v1/updates/check",
+    "platforms": [
+      "android-normal",
+      "android-huawei",
+      "windows-x64"
+    ],
+    "protocol": 2,
+    "check_method": "GET",
+    "download_method": "POST",
+    "authentication": "Bearer session token",
+    "ticket_ttl_seconds": 180
+  },
+  "revision": "3.0.0-production-rust-realtime-figma-bridge19-30000",
+  "android_hotfix": {
+    "version_name": "3.0.0",
+    "version_code": 30000,
+    "base_version_code": 20001,
+    "description": "FedMes 3.0 production client migration to frozen Bridge 1.9 Figma contract with Rust realtime server compatibility"
+  },
+  "security_epoch": 1,
+  "protocol_generation": 4
+}

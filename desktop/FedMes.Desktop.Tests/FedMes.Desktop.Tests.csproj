@@ -1,0 +1,10 @@
+<Project Sdk="MSTest.Sdk/4.2.3">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FedMes.Desktop.Core\FedMes.Desktop.Core.csproj" />
+  </ItemGroup>
+</Project>

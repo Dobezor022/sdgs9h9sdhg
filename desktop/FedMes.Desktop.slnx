@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="FedMes.Desktop.Core/FedMes.Desktop.Core.csproj" />
+  <Project Path="FedMes.Desktop/FedMes.Desktop.csproj" />
+  <Project Path="FedMes.Desktop.Tests/FedMes.Desktop.Tests.csproj" />
+</Solution>

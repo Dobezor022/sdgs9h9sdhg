@@ -1,0 +1,20 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QR-коды подключения — FedMes</title><link rel="stylesheet" href="assets/style.css"></head><body><header><nav><strong>FedMes</strong><a href="index.html">Главная</a><a href="structure.html">Структура</a><a href="architecture.html">Архитектура</a><a href="build.html">Сборка</a><a href="use.html">Использование</a><a href="ubuntu.html">Ubuntu HTTPS</a><a href="qr.html">QR</a><a href="operations.html">Обслуживание</a><a href="security.html">Безопасность</a></nav></header><main><h1>QR-коды подключения</h1><p class="lead">QR содержит одноразовый секрет. Его создают рядом с той же базой данных, которую использует сервер.</p>
+<h2>Windows</h2><p>Сначала соберите <code>windowsxhttp</code>. Затем:</p><pre><code>.\Build\windowshttp\fedmes-qr.exe `
+  --server-url "http://192.168.1.108:8008" `
+  --data-dir "C:\ProgramData\FedMes" `
+  --out-dir ".\FedMes-QR" `
+  --ttl "30m" `
+  --users all `
+  --allow-http `
+  --server-exe ".\Build\windowshttp\fedmes-server.exe"</code></pre>
+<h2>Linux после установки</h2><pre><code>sudo -u fedmes /opt/fedmes/bin/fedmes-qr \
+  --server-url "https://chat.example.ru" \
+  --data-dir "/var/lib/fedmes" \
+  --out-dir "/var/lib/fedmes/private-qr" \
+  --ttl "30m" \
+  --users all \
+  --server-exe "/opt/fedmes/bin/fedmes-server"</code></pre>
+<h2>Отдельные пользователи</h2><pre><code>--users grisha,papa,mama</code></pre><p>Допустимы только <code>grisha</code>, <code>papa</code>, <code>mama</code>, <code>yura</code>, <code>vasya</code>.</p>
+<h2>Обновление QR</h2><p>Программа по умолчанию не перезаписывает существующие PNG. Используйте новый каталог либо добавьте <code>--replace</code>. Старый одноразовый код после применения повторно не работает; неиспользованные коды прекращают действовать после TTL.</p>
+<div class="warning"><strong>Не публикуйте QR.</strong> QR-коды нельзя помещать в <code>/var/www/fedmes</code>, отправлять в общие чаты или хранить после подключения устройства.</div>
+<footer>Документация относится к исходному проекту и программам, находящимся в этом архиве.</footer></main></body></html>

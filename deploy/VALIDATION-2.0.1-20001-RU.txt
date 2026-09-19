@@ -1,0 +1,28 @@
+FedMes 2.0.1 build 20001 — release validation gates
+
+Проверено в release workspace:
+[PASS] tools: go test ./...
+[PASS] tools: go vet ./...
+[PASS] fedmes-build Linux binary build
+[PASS] fedmes-build Windows x64 binary build
+[PASS] security2: go test ./...
+[PASS] security2: go vet ./...
+[PASS] SQLite migrations 0001..0014 на чистой БД
+[PASS] schema version = 14
+[PASS] default chats = 16
+[PASS] memberships = 6 для grisha/papa/mama/yura/vasya
+[PASS] production shell syntax validation
+[PASS] Go server/helper binaries удалены из production deploy/Build
+[PASS] project version = 2.0.1 / 20001
+[PASS] Android secure-session null hotfix присутствует
+[PASS] Android optimistic PENDING send path присутствует
+[PASS] Android foreground event long-poll присутствует
+[PASS] Rust media path streaming + no-overwrite finalization
+
+Обязательный deployment gate:
+- В среде формирования ZIP отсутствует Rust toolchain и нет доступа к registry, поэтому cargo compilation нельзя честно заявить локально.
+- clean-install-2.0.1.sh ОБЯЗАТЕЛЬНО запускает cargo test --all-targets и cargo build --release --bins на Ubuntu ДО остановки текущего сервиса.
+- При любой Rust compile/test ошибке production сервер не переключается.
+- После переключения installer требует Rust health 2.0.1/20001 + schema 14; при ошибке выполняется rollback runtime/config.
+
+Legacy OPAQUE/password endpoints: fail-closed by design in 2.0.1. QR/device/recovery path is the supported production path.

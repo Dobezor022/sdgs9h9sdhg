@@ -1,0 +1,27 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Сборка проекта — FedMes</title><link rel="stylesheet" href="assets/style.css"></head><body><header><nav><strong>FedMes</strong><a href="index.html">Главная</a><a href="structure.html">Структура</a><a href="architecture.html">Архитектура</a><a href="build.html">Сборка</a><a href="use.html">Использование</a><a href="ubuntu.html">Ubuntu HTTPS</a><a href="qr.html">QR</a><a href="operations.html">Обслуживание</a><a href="security.html">Безопасность</a></nav></header><main><h1>Сборка проекта</h1><p class="lead">Команды записывают результат только в стандартизированные подкаталоги Build.</p>
+<h2>Требования Windows</h2><ul><li>Windows 10/11 x64.</li><li>Go 1.25 или новее для сервера.</li><li>JDK 21 и Android SDK для APK.</li><li>.NET SDK 10 для Windows-клиента.</li><li>PowerShell 5.1 или PowerShell 7.</li></ul>
+<h2>Windows PowerShell</h2><p>Откройте PowerShell в корне проекта:</p><pre><code>Set-Location C:\Users\STUDIO-PC\Pictures\androidconsole</code></pre>
+<table><tr><th>Что собрать</th><th>Команда</th></tr>
+<tr><td>Android Normal</td><td><code>powershell -ExecutionPolicy Bypass -File .\Build\android.ps1</code></td></tr>
+<tr><td>Huawei</td><td><code>powershell -ExecutionPolicy Bypass -File .\Build\huawei.ps1</code></td></tr>
+<tr><td>Windows-клиент</td><td><code>powershell -ExecutionPolicy Bypass -File .\Build\windowsclient.ps1</code></td></tr>
+<tr><td>Windows HTTP сервер</td><td><code>powershell -ExecutionPolicy Bypass -File .\Build\windowsxhttp.ps1</code></td></tr>
+<tr><td>Всё</td><td><code>powershell -ExecutionPolicy Bypass -File .\Build\all.ps1</code></td></tr></table>
+<p>Для пропуска тестов добавьте <code>-SkipTests</code>.</p>
+<h2>Единая программа Windows</h2><pre><code>.\Build\fedmes-build.exe android
+.\Build\fedmes-build.exe huawei
+.\Build\fedmes-build.exe windowsclient
+.\Build\fedmes-build.exe windowsxhttp
+.\Build\fedmes-build.exe linuxhttps
+.\Build\fedmes-build.exe all</code></pre>
+<p>Без аргументов программа показывает интерактивное меню:</p><pre><code>.\Build\fedmes-build.exe</code></pre>
+<h2>Ubuntu/Linux</h2><pre><code>chmod +x Build/fedmes-build
+./Build/fedmes-build android
+./Build/fedmes-build huawei
+./Build/fedmes-build windowsclient
+./Build/fedmes-build linuxhttps
+./Build/fedmes-build all</code></pre>
+<div class="note">Сборка Windows WPF на Linux выполняется через Windows targeting pack .NET. Наиболее надёжный вариант для Windows-клиента — запуск <code>windowsclient.ps1</code> на Windows.</div>
+<h2>Результаты</h2><table><tr><th>Файл</th><th>Каталог</th></tr><tr><td>Normal APK</td><td><code>Build/android/normal/</code></td></tr><tr><td>Huawei APK</td><td><code>Build/android/huawei/harmonous2.0/</code></td></tr><tr><td>Windows клиент</td><td><code>Build/windowsclient/</code></td></tr><tr><td>Windows сервер и QR</td><td><code>Build/windowshttp/</code></td></tr><tr><td>Linux HTTPS комплект</td><td><code>Build/linuxhttps/</code></td></tr></table>
+<p>Для исполняемых файлов создаются контрольные суммы <code>.sha256</code> и сведения о сборке <code>build.json</code>.</p>
+<footer>Документация относится к исходному проекту и программам, находящимся в этом архиве.</footer></main></body></html>
